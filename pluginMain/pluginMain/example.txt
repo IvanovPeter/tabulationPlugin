@@ -1,0 +1,34 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int a = 0;
+    int b;
+    int c;
+
+
+    if(a == 0){
+        b = 9;          // commentary
+        while(a != 5){          //hgdhsdhsbgs
+            /*
+            hgdfhsdhf
+            a
+
+            hdsfh;
+            */
+            a = a + 1;
+        }
+        b = 1;
+        int k = 53958;
+    }
+    if(true) {
+        int j = 0;
+        int i = -1;
+        j = i;
+    }
+    int s = 8 / 2;
+    int g;
+
+    return 0;
+}

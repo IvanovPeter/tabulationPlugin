@@ -1,0 +1,7 @@
+[
+    {
+        "key": "ctrl+alt+q", // сочетание клавиш
+        "command": "tabulationPlugin.refactorCode", //название команды
+        "when": "editorTextFocus"
+    }
+]
