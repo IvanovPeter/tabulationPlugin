@@ -128,6 +128,19 @@
     Основная функция расширения.
     Используется при активации команды `>refactorCode` и при вызове `mainFunc(text)`. Также считывает текст из активного редактора и заменяет его на отформатированный
    
-  
+## История изменений проекта
+  Hash    | Commit message
+  --------|------------------------
+  55185e1 | 30.11 update
+  31ba02f |plugin updated
+  2c84931 |Update README.md
+  db7223e |v2 files added
+  f8f01b8 |Delete README.md
+  d739f28 |Delete tabulationPlugin directory
+  a981aed |Delete pluginMain directory
+  cce03da |Update README.md
+  5051b89 |Create README.md
+  5ea2621 |Update README.md
+  f065129 |v 1 files added
     
    
