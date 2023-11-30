@@ -102,6 +102,16 @@ void setImmutableSymbols(const int& countOfSymbols, vector<char>& text, vector<b
                 immutableSymbols[currentPosition] = true;
             }
         }
+        else if (text[currentPosition] == '(') {
+            while (currentPosition + 1 < countOfSymbols && text[currentPosition + 1] != ')') {
+                immutableSymbols[currentPosition] = true;
+                ++currentPosition;
+            }
+            ++currentPosition;
+            if (currentPosition < countOfSymbols) {
+                immutableSymbols[currentPosition] = true;
+            }
+        }
         if (currentPosition + 1 < countOfSymbols && text[currentPosition] == '/') {
             if (text[currentPosition + 1] == '/') {
                 while (currentPosition + 1 < countOfSymbols && !isEndOfLine(text[currentPosition + 1])) {

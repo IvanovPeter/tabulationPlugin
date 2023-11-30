@@ -89,6 +89,15 @@ function setImmutableSymbols(countOfSymbols, text, immutableSymbols){
 			if(currentPosition < countOfSymbols){
 				immutableSymbols[currentPosition] = true;
 			}
+		} else if(text.charAt(currentPosition) == '(') {
+			while(currentPosition + 1 < countOfSymbols && text.charAt(currentPosition + 1) != ')'){
+				immutableSymbols[currentPosition] = true;
+				++currentPosition;
+			}
+			++currentPosition;
+			if(currentPosition < countOfSymbols){
+				immutableSymbols[currentPosition] = true;
+			}
 		}
 		if(currentPosition + 1 < countOfSymbols && text.charAt(currentPosition) == '/'){
 			if(text.charAt(currentPosition + 1) == '/'){
