@@ -67,10 +67,10 @@ function removeExtraSpaceSymbols(countOfSymbols, text, ignore){
 }
 
 //УДАЛЕНИЕ ИГНОРИРУЕМЫХ СИМВОЛОВ
-function refactorText(countOfSymbols, text, ignore){
+function refactorText(countOfSymbols, text, ignore, immutableSymbols){
 	let charArray = [];
 	for (let currentPosition = 0; currentPosition < countOfSymbols; ++currentPosition){
-		if(!ignore[currentPosition]) {
+		if(!ignore[currentPosition] || immutableSymbols[currentPosition]) {
 			charArray.push(text.charAt(currentPosition));
 		}
 	}
@@ -78,14 +78,46 @@ function refactorText(countOfSymbols, text, ignore){
 	return newText;
 }
 
+function setImmutableSymbols(countOfSymbols, text, immutableSymbols){
+	for (let currentPosition = 0; currentPosition < countOfSymbols; ++currentPosition){
+		if(text.charCodeAt(currentPosition) == 34){
+			while(currentPosition + 1 < countOfSymbols && text.charCodeAt(currentPosition + 1) != 34){
+				immutableSymbols[currentPosition] = true;
+				++currentPosition;
+			}
+			++currentPosition;
+			if(currentPosition < countOfSymbols){
+				immutableSymbols[currentPosition] = true;
+			}
+		}
+		if(currentPosition + 1 < countOfSymbols && text.charAt(currentPosition) == '/'){
+			if(text.charAt(currentPosition + 1) == '/'){
+				while(currentPosition + 1 < countOfSymbols && !isEndOfLine(text.charAt(currentPosition + 1))){
+					immutableSymbols[currentPosition] = true;
+					++currentPosition;
+				}
+			}
+			else if(text.charAt(currentPosition + 1) == '*'){
+				while(currentPosition + 2 < countOfSymbols && !(text.charAt(currentPosition + 1) == '*' && text.charAt(currentPosition + 2) == '/')){
+					immutableSymbols[currentPosition] = true;
+					++currentPosition;
+				}
+			}
+		}
+	}
+}
+
 //РАЗБИЕНИЕ ТЕКСТА НА СТРОКИ
-function partitionTextToLines(countOfSymbols, text, stringsPartition){
+function partitionTextToLines(countOfSymbols, text, immutableSymbols, stringsPartition){
 	let currentStringNumber = 0;
 	for (let currentPosition = 0; currentPosition < countOfSymbols; ++currentPosition){
 		if(currentStringNumber >= stringsPartition.length){
 			stringsPartition.push([]);
 		}
-		if(isNewEndOfLine(text.charAt(currentPosition))){
+		if(immutableSymbols[currentPosition]){
+			stringsPartition[currentStringNumber].push(text.charAt(currentPosition));
+		}
+		else if(isNewEndOfLine(text.charAt(currentPosition))){
 			if(currentPosition + 1 < countOfSymbols && text.charAt(currentPosition + 1) == '/'){
 				stringsPartition[currentStringNumber].push(text.charAt(currentPosition));
 				++currentPosition;
@@ -146,14 +178,18 @@ function setLevelOfNesting(countOfStrings, stringsPartition, setLevelOfNesting){
 function mainFunc(text){
 	let countOfSymbols = text.length;
 	let ignore = new Array(countOfSymbols).fill(false);
+	let immutableSymbols = new Array(countOfSymbols).fill(false);
 
 	removeExtraSpaceSymbols(countOfSymbols, text, ignore);
-	text = refactorText(countOfSymbols, text, ignore);
+	setImmutableSymbols(countOfSymbols, text, immutableSymbols);
+	text = refactorText(countOfSymbols, text, ignore, immutableSymbols);
 	countOfSymbols = text.length;
 	ignore = new Array(countOfSymbols).fill(false);
+	immutableSymbols = new Array(countOfSymbols).fill(false);
 
 	let stringsPartition = [[]];
-	partitionTextToLines(countOfSymbols, text, stringsPartition);
+	setImmutableSymbols(countOfSymbols, text, immutableSymbols);
+	partitionTextToLines(countOfSymbols, text, immutableSymbols, stringsPartition);
 	
 	let countOfStrings = stringsPartition.length;
 	let LevelOfNesting = new Array(countOfStrings).fill(0);
